@@ -20,7 +20,7 @@
   gap: clamp(8px, 1%, 16px);
   max-width: 95%;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: nowrap;
   position: relative;
   min-height: 60px;
@@ -119,11 +119,12 @@
   display: flex;
   align-items: center;
   gap: clamp(6px, 1.5%, 16px);
-  flex: 1;
   justify-content: center;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   min-width: 0;
-  max-width: 40%;
+  max-width: 90%;
 }
 
 /* Left navigation styles */
@@ -266,12 +267,11 @@
     order: 2;
     flex-direction: row;
     text-align: center;
-    position: relative;
-    transform: none;
-    left: auto;
-    max-width: none;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    max-width: calc(100% - 96px);
     width: auto;
-    flex: 0 1 auto;
     justify-content: center;
     min-width: 0;
   }

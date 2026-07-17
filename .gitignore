@@ -36,6 +36,7 @@ yarn-error.log*
 *ENV*.md
 *SECURITY*.md
 *DEPLOYMENT*.md
+PROJECT_HANDOFF.md
 transaction_info.txt
 *secret*.md
 *credential*.md

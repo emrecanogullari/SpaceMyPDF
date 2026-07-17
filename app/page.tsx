@@ -20,6 +20,39 @@ import MobileOrientationMessage from './components/MobileOrientationMessage';
 import { useAnalytics } from './utils/useAnalytics';
 import './components/GreenSectionFinal.css';
 
+type PageSelectionResult = {
+  pageIndexes: Set<number>;
+  error: string;
+};
+
+const parsePageRange = (range: string, totalPageCount: number): PageSelectionResult => {
+  const trimmedRange = range.trim();
+  if (!trimmedRange) {
+    return { pageIndexes: new Set(), error: 'Enter at least one page number or range.' };
+  }
+
+  const pageIndexes = new Set<number>();
+  for (const rawPart of trimmedRange.split(',')) {
+    const part = rawPart.trim();
+    const match = part.match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+    if (!match) {
+      return { pageIndexes: new Set(), error: 'Use page numbers and ranges, for example: 1-3, 5, 8-10.' };
+    }
+
+    const start = Number(match[1]);
+    const end = Number(match[2] ?? match[1]);
+    if (start < 1 || end < 1 || start > end || end > totalPageCount) {
+      return { pageIndexes: new Set(), error: `Choose pages from 1 to ${totalPageCount}, using ranges in ascending order.` };
+    }
+
+    for (let pageNumber = start; pageNumber <= end; pageNumber++) {
+      pageIndexes.add(pageNumber - 1);
+    }
+  }
+
+  return { pageIndexes, error: '' };
+};
+
 export default function Home() {
   const { trackEvent } = useAnalytics();
   const [file, setFile] = useState<File | null>(null);
@@ -37,6 +70,8 @@ export default function Home() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | { original: string, modified: string }>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
+  const [pageSelectionMode, setPageSelectionMode] = useState<'all' | 'custom'>('all');
+  const [pageRange, setPageRange] = useState('');
   const [downloadIsProcessing, setDownloadIsProcessing] = useState(false);
   // MEMBERSHIP DISABLED: Modal state commented out for future re-enablement
   // const [showMembershipModal, setShowMembershipModal] = useState(false);
@@ -83,6 +118,20 @@ export default function Home() {
   // New state for specifying save location
   const [specifyLocation, setSpecifyLocation] = useState(false);
   
+  const getSelectedPageIndexes = (pageCount: number): PageSelectionResult => {
+    if (pageSelectionMode === 'all') {
+      return {
+        pageIndexes: new Set(Array.from({ length: pageCount }, (_, index) => index)),
+        error: ''
+      };
+    }
+
+    return parsePageRange(pageRange, pageCount);
+  };
+
+  const pageSelectionError = totalPages > 0
+    ? getSelectedPageIndexes(totalPages).error
+    : '';
   
   // Use useLayoutEffect to ensure everything is ready before rendering
   useLayoutEffect(() => {
@@ -112,6 +161,9 @@ export default function Home() {
     
     setIsProcessing(true); // Set processing state immediately when file is uploaded
     setFile(uploadedFile);
+    setTotalPages(0);
+    setPageSelectionMode('all');
+    setPageRange('');
     setBaseFileName(uploadedFile.name.replace('.pdf', ''));
     updateOutputFileName(uploadedFile.name.replace('.pdf', ''), includeWithNotes);
     setPdfPreviewUrl('');
@@ -131,6 +183,9 @@ export default function Home() {
     setPdfPreviewUrl('');
     setBaseFileName('');
     setOutputFileName('');
+    setTotalPages(0);
+    setPageSelectionMode('all');
+    setPageRange('');
     setSuccessMessage('');
     setIsProcessing(false); // Clear processing state when file is cleared
     if (fileInputRef.current) {
@@ -209,6 +264,11 @@ export default function Home() {
         const originalPdfDoc = await PDFDocument.load(fileBuffer);
         const totalPageCount = originalPdfDoc.getPageCount();
         setTotalPages(totalPageCount);
+        const { pageIndexes: selectedPageIndexes, error: selectionError } = getSelectedPageIndexes(totalPageCount);
+        if (selectionError) {
+          setIsProcessing(false);
+          return;
+        }
 
         // Create original preview document (max 3 pages)
         const originalPreviewDoc = await PDFDocument.create();
@@ -232,7 +292,7 @@ export default function Home() {
         // Copy pages to modified preview document
         for (let i = 0; i < pagesToPreview; i++) {
                       // If noteSpaceWidth is provided, create a new page with extended dimensions
-            if (noteSpaceWidth > 0) {
+            if (noteSpaceWidth > 0 && selectedPageIndexes.has(i)) {
               const originalPage = originalPdfDoc.getPage(i);
               const { width, height } = originalPage.getSize();
               
@@ -527,7 +587,7 @@ export default function Home() {
         }
       }
     };
-  }, [file, noteSpaceWidth, noteContentGap, colorOption, customColor, noteSpacePosition, noteSpacePositions, notePattern, lineSpacing, gridSpacing, dotSpacing, useSeparateWidths, horizontalNoteSpaceWidth, verticalNoteSpaceWidth]);
+  }, [file, noteSpaceWidth, noteContentGap, colorOption, customColor, noteSpacePosition, noteSpacePositions, notePattern, lineSpacing, gridSpacing, dotSpacing, useSeparateWidths, horizontalNoteSpaceWidth, verticalNoteSpaceWidth, pageSelectionMode, pageRange]);
 
   // Download functionality
   const handleDownload = async () => {
@@ -552,12 +612,18 @@ export default function Home() {
       
       // Process each page
       const pages = pdfDoc.getPages();
+      const { pageIndexes: selectedPageIndexes, error: selectionError } = getSelectedPageIndexes(pages.length);
+      if (selectionError) {
+        alert(selectionError);
+        return;
+      }
+
       for (let i = 0; i < pages.length; i++) {
         const originalPage = pdfDoc.getPage(i);
         const { width, height } = originalPage.getSize();
         
         // If noteSpaceWidth is provided, create a new page with extended dimensions
-        if (noteSpaceWidth > 0) {
+        if (noteSpaceWidth > 0 && selectedPageIndexes.has(i)) {
           // Calculate new dimensions based on all selected positions
           let newWidth = width;
           let newHeight = height;
@@ -1183,6 +1249,12 @@ export default function Home() {
             setDotSpacing={setDotSpacing}
             noteSpacePositions={noteSpacePositions}
             setNoteSpacePositions={setNoteSpacePositions}
+            totalPages={totalPages}
+            pageSelectionMode={pageSelectionMode}
+            setPageSelectionMode={setPageSelectionMode}
+            pageRange={pageRange}
+            setPageRange={setPageRange}
+            pageSelectionError={pageSelectionError}
           />
         </GreenContentWrapper>
         

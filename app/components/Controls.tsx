@@ -32,6 +32,12 @@ interface ControlsProps {
   setGridSpacing: (spacing: number) => void;
   dotSpacing: number;
   setDotSpacing: (spacing: number) => void;
+  totalPages: number;
+  pageSelectionMode: 'all' | 'custom';
+  setPageSelectionMode: (mode: 'all' | 'custom') => void;
+  pageRange: string;
+  setPageRange: (range: string) => void;
+  pageSelectionError: string;
   baseFileName: string;
   handleBaseFileNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   includeWithNotes: boolean;
@@ -76,6 +82,12 @@ const Controls: React.FC<ControlsProps> = ({
   setGridSpacing,
   dotSpacing,
   setDotSpacing,
+  totalPages,
+  pageSelectionMode,
+  setPageSelectionMode,
+  pageRange,
+  setPageRange,
+  pageSelectionError,
   baseFileName,
   handleBaseFileNameChange,
   includeWithNotes,
@@ -253,6 +265,67 @@ const Controls: React.FC<ControlsProps> = ({
             >
               Clear Document
             </button>
+          </div>
+        )}
+
+        {file && totalPages > 0 && (
+          <div style={{ marginBottom: '2vh', width: '100%' }}>
+            <p style={{ fontWeight: '600', marginBottom: '1vh', color: '#2c3e50', fontSize: 'clamp(13px, 1.5vw, 15px)' }}>
+              Pages to Add Space To
+            </p>
+            <div style={{
+              border: '1px solid black',
+              borderRadius: '4px',
+              backgroundColor: 'white',
+              padding: '10px',
+              width: '100%'
+            }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '10px' }}>
+                <input
+                  type="radio"
+                  name="pageSelection"
+                  checked={pageSelectionMode === 'all'}
+                  onChange={() => setPageSelectionMode('all')}
+                />
+                <span>All {totalPages} pages</span>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                <input
+                  type="radio"
+                  name="pageSelection"
+                  checked={pageSelectionMode === 'custom'}
+                  onChange={() => setPageSelectionMode('custom')}
+                />
+                <span>Only selected pages</span>
+              </label>
+              {pageSelectionMode === 'custom' && (
+                <div style={{ marginTop: '10px' }}>
+                  <label htmlFor="pageRange" style={{ display: 'block', fontSize: 'clamp(12px, 1.4vw, 14px)', marginBottom: '6px' }}>
+                    Page numbers or ranges
+                  </label>
+                  <input
+                    id="pageRange"
+                    type="text"
+                    value={pageRange}
+                    onChange={(e) => setPageRange(e.target.value)}
+                    placeholder="For example: 1-3, 5, 8-10"
+                    aria-describedby="pageRangeHelp"
+                    aria-invalid={Boolean(pageSelectionError)}
+                    style={{
+                      width: '100%',
+                      padding: '8px',
+                      border: `1px solid ${pageSelectionError ? '#b91c1c' : '#999'}`,
+                      borderRadius: '4px',
+                      boxSizing: 'border-box',
+                      fontSize: 'clamp(12px, 1.4vw, 14px)'
+                    }}
+                  />
+                  <p id="pageRangeHelp" style={{ fontSize: 'clamp(10px, 1.2vw, 12px)', margin: '8px 0 0', color: pageSelectionError ? '#b91c1c' : '#4b5563', lineHeight: '1.4' }}>
+                    {pageSelectionError || `Enter pages from 1 to ${totalPages}. Pages not listed will stay unchanged.`}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )}
         
@@ -1162,14 +1235,14 @@ const Controls: React.FC<ControlsProps> = ({
               {/* <DownloadRestriction onDownload={handleDownload}> */}
                 <button
                   onClick={handleDownload}
-                  disabled={!file || downloadIsProcessing}
+                  disabled={!file || downloadIsProcessing || Boolean(pageSelectionError)}
                   style={{
-                    backgroundColor: file ? '#4a6741' : '#ccc',
+                    backgroundColor: file && !pageSelectionError ? '#4a6741' : '#ccc',
                     color: 'white',
                     border: 'none',
                     borderRadius: '4px',
                     padding: '10px',
-                    cursor: file ? 'pointer' : 'not-allowed',
+                    cursor: file && !pageSelectionError ? 'pointer' : 'not-allowed',
                     width: '100%',
                   fontSize: 'clamp(14px, 1.6vw, 16px)',
                   display: 'flex',

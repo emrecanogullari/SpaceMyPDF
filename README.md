@@ -1,78 +1,69 @@
 # SpaceMyPDF
 
-A modern web application for manipulating PDF files directly in your browser.
+A free, browser-based tool for adding customizable note-taking space to existing PDFs. PDF processing happens locally in the browser: uploaded documents are not sent to the application server.
 
 ## Features
 
-- **PDF Upload**: Upload PDF files from your device
-- **PDF Preview**: View your PDFs directly in the browser
-- **PDF Manipulation**:
-  - Rotate pages
-  - Delete pages
-  - Reorder pages
-  - Add spacing between pages
-- **Note Space Customization**:
-  - Add note space to any side (left, right, top, bottom)
-  - Combine multiple sides (e.g., left + right, top + bottom)
-  - Customize width and color
-  - Add helpful patterns (lines, grid, dots) for better note-taking
-- **PDF Download**: Download your modified PDFs
-- **PDF Merging**: Combine multiple PDFs into one document
+- Upload a PDF from your device (up to 50 MB).
+- Add note space on the left, right, top, bottom, or multiple sides at once.
+- Set shared or separate horizontal and vertical note-space widths.
+- Choose a white or custom note-space color.
+- Add optional lines, grids, or dots and configure their spacing.
+- Add an optional blank gap between the original page and the note area.
+- Apply note space to every page (the default) or selected pages using ranges such as `1-3, 5, 8-10`.
+- Preview the original and modified first three pages before downloading.
+- Download the altered PDF directly, or select a save location in browsers that support the File System Access API.
 
 ## Technology Stack
 
-- **Frontend**: Next.js, React, TailwindCSS
-- **PDF Processing**: PDF.js, pdf-lib
+- **Frontend**: Next.js, React, Tailwind CSS
+- **PDF processing**: pdf-lib, running client-side
+- **Database and admin tooling**: PostgreSQL and custom JWT authentication
 - **Deployment**: Vercel
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18.x or higher
-- npm or yarn
+- Node.js 18 or later
+- npm
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/SpaceMyPDF.git
+   git clone <repository-url>
    cd SpaceMyPDF
    ```
 
 2. Install dependencies:
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
-3. Create a `.env.local` file in the root directory with the following variables:
-   ```
-   # Add any required environment variables here
-   ```
+3. For the public PDF tool, no environment variables are required. Database, analytics, donation, email, Stripe, and admin features may require environment variables; see `PROJECT_HANDOFF.md` for the names and operational guidance. Never commit environment values.
 
 4. Start the development server:
    ```bash
    npm run dev
-   # or
-   yarn dev
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Deployment
+## Useful commands
 
-This application is configured for easy deployment on Vercel. See the deployment documentation for more details.
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-## Contributing
+`npm run lint` currently has known pre-existing failures, and the production build intentionally does not fail on all TypeScript or ESLint issues. A successful build is not a complete quality check.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## Maintainer notes
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Thanks to all the open-source libraries that made this project possible.
+- `PROJECT_HANDOFF.md` is the local source of truth for product posture, security constraints, integrations, known debt, and manual verification.
+- The public product is completely free and does not require accounts, trials, or memberships.
+- Historic membership, dashboard, referral, and Stripe code remains in the repository but is intentionally inactive. Do not remove or reactivate it without following the handoff guidance.
+- The active PDF-generation logic is in `app/page.tsx`. Preview generation and download generation are separate paths and must be kept behaviorally identical.
