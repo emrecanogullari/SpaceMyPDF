@@ -68,6 +68,21 @@ body {
   z-index: 4;
 }
 
+.home-legal-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 16px 32px;
+  position: relative;
+  z-index: 4;
+  font-size: 14px;
+}
+
+.home-legal-links a {
+  color: #2c3e50;
+  text-underline-offset: 3px;
+}
+
 .side-column {
   background-color: #f2c4aa;
   z-index: 2;

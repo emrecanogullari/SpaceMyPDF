@@ -28,6 +28,8 @@ type AdSlotProps = {
   placement: 'rail' | 'footer';
 };
 
+type AdMode = 'pending' | 'personalized' | 'limited';
+
 const googleVendorId = '755';
 let adSenseScriptPromise: Promise<void> | null = null;
 
@@ -59,8 +61,8 @@ const loadAdSenseScript = (client: string) => {
   return adSenseScriptPromise;
 };
 
-const useAdConsent = () => {
-  const [hasConsent, setHasConsent] = useState(false);
+const useAdMode = () => {
+  const [adMode, setAdMode] = useState<AdMode>('pending');
 
   useEffect(() => {
     let cancelled = false;
@@ -82,13 +84,13 @@ const useAdConsent = () => {
 
         listenerId = tcData.listenerId;
         if (tcData.gdprApplies === false) {
-          setHasConsent(true);
+          setAdMode('personalized');
           return;
         }
 
         const storageConsent = tcData.purpose?.consents?.['1'];
         const googleConsent = tcData.vendor?.consents?.[googleVendorId];
-        setHasConsent(Boolean(storageConsent && googleConsent));
+        setAdMode(storageConsent && googleConsent ? 'personalized' : 'limited');
       });
     };
 
@@ -102,17 +104,17 @@ const useAdConsent = () => {
     };
   }, []);
 
-  return hasConsent;
+  return adMode;
 };
 
 export default function AdSlot({ slot, placement }: AdSlotProps) {
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
-  const consentGranted = useAdConsent();
+  const adMode = useAdMode();
   const initialized = useRef(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!client || !slot || !consentGranted || initialized.current) return;
+    if (!client || !slot || adMode === 'pending' || initialized.current) return;
 
     let active = true;
     loadAdSenseScript(client)
@@ -130,9 +132,9 @@ export default function AdSlot({ slot, placement }: AdSlotProps) {
     return () => {
       active = false;
     };
-  }, [client, consentGranted, slot]);
+  }, [adMode, client, slot]);
 
-  if (!client || !slot || !consentGranted) return null;
+  if (!client || !slot || adMode === 'pending') return null;
 
   return (
     <section className={`ad-slot ad-slot--${placement}`} aria-label="Advertisement">
@@ -144,6 +146,7 @@ export default function AdSlot({ slot, placement }: AdSlotProps) {
         data-ad-slot={slot}
         data-ad-format={placement === 'footer' ? 'auto' : undefined}
         data-full-width-responsive={placement === 'footer' ? 'true' : undefined}
+        data-npa={adMode === 'limited' ? '1' : undefined}
       />
       {!ready && <span className="ad-slot__loading" aria-hidden="true" />}
     </section>

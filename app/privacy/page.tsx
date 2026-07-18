@@ -11,47 +11,43 @@ export default function PrivacyPage() {
     <LegalPage title="Privacy Policy" updated="17 July 2026">
       <p>
         SpaceMyPDF is designed so PDF processing happens in your browser. We do not upload
-        the PDFs you select to our servers as part of the public note-space tool.
+        the PDFs you select to any servers as part of the public note-space tool.
       </p>
 
       <h2>Information we process</h2>
       <p>
-        We may process limited technical information such as device, browser, IP address,
-        pages visited, and aggregated usage events through analytics, consent, security, and
-        advertising providers. If you contact us or make a donation, the information you
-        provide is handled by the relevant contact or payment provider.
+        We do not retain the contents of PDFs processed with the public tool. Google Analytics
+        may receive limited technical and aggregated usage information to help us understand
+        site use. If you contact us or make a donation, the relevant contact or payment
+        provider handles the information you choose to provide.
       </p>
 
       <h2>Analytics, donations, and advertising</h2>
       <p>
         We use Google Analytics to understand aggregated site use. Donations are processed
-        by PayPal, which handles payment information under its own privacy policy. We may
-        display advertising from Google AdSense and other reputable advertising providers.
-        Those providers may process information and use cookies or similar technologies only
-        in accordance with your consent choices and applicable law.
+        by PayPal, which handles payment information under its own privacy policy.
+        Advertising is not currently enabled. If advertising is enabled in the future, this
+        policy will be updated to identify the provider and describe its cookie and data use.
       </p>
 
       <h2>Your consent choices</h2>
       <p>
-        Where required, we use a consent-management platform to request and record your
-        choices before enabling non-essential cookies or personalised advertising. You can
-        revisit or change those choices through the consent controls made available on the
-        site. See our <a href="/cookies">Cookie Policy</a> for more detail.
+        Before we enable advertising or other optional cookie-based services, we will provide
+        a consent-management tool that lets you accept, reject, or manage optional cookies.
+        This policy will be updated when that tool is live. See our{' '}
+        <a href="/cookies">Cookie Policy</a> for more detail.
       </p>
 
       <h2>Retention and sharing</h2>
       <p>
-        We retain information only for as long as needed for the purposes described here or
-        to meet legal obligations. We do not sell PDF files. We may share limited data with
-        service providers that operate analytics, payments, consent, hosting, security, and
-        advertising on our behalf.
+        We do not retain PDF files processed through the public tool. Google Analytics and
+        PayPal retain information under their own policies. We do not sell PDF files.
       </p>
 
       <h2>Your rights and contact</h2>
       <p>
-        Depending on where you live, you may have rights to access, correct, delete, object
-        to, or restrict processing of your personal information. For privacy requests or
-        questions, contact <a href="mailto:spacemypdf@gmail.com">spacemypdf@gmail.com</a>.
+        For questions about this policy or information you have directly provided to us,
+        contact <a href="mailto:spacemypdf@gmail.com">spacemypdf@gmail.com</a>.
       </p>
     </LegalPage>
   );

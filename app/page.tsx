@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useLayoutEffect, useContext, useCallback } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import Image from 'next/image';
+import Link from 'next/link';
 import Layout, { GreenContentRefContext } from './components/Layout';
 import Header from './components/Header';
 import Features from './components/Features';
@@ -1284,6 +1285,11 @@ export default function Home() {
           />
           <div className="section-gap"></div>
           <DonationsBox />
+          <nav className="home-legal-links" aria-label="Legal links">
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/cookies">Cookies</Link>
+            <Link href="/terms">Terms</Link>
+          </nav>
         </div>
         <section className="mobile-ad-section" aria-label="Advertisement section">
           <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_FOOTER_SLOT} placement="footer" />
