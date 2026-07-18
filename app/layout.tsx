@@ -85,6 +85,7 @@ export default function RootLayout({
 }) {
   // Combine font variables
   const fontVariables = `${inter.variable} ${roboto.variable}`;
+  const adSenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   
   return (
     <html lang="en" className={`${fontVariables} font-loading`}>
@@ -92,6 +93,21 @@ export default function RootLayout({
         {/* External CSS is now imported at the top */}
         {/* External JS is now loaded with Next.js Script component */}
         <Script src="/scripts/font-loader.js" strategy="afterInteractive" />
+        {adSenseClient && (
+          <>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: 'window.adsbygoogle = window.adsbygoogle || []; window.adsbygoogle.pauseAdRequests = 1;',
+              }}
+            />
+            <script
+              async
+              crossOrigin="anonymous"
+              data-adsense-client={adSenseClient}
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(adSenseClient)}`}
+            />
+          </>
+        )}
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
         
         {/* Favicon */}

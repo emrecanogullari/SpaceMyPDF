@@ -29,6 +29,10 @@ type AdSlotProps = {
 };
 
 type AdMode = 'pending' | 'personalized' | 'limited';
+type AdQueue = unknown[] & {
+  pauseAdRequests?: number;
+  requestNonPersonalizedAds?: number;
+};
 
 const googleVendorId = '755';
 let adSenseScriptPromise: Promise<void> | null = null;
@@ -114,13 +118,18 @@ export default function AdSlot({ slot, placement }: AdSlotProps) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!client || !slot || adMode === 'pending' || initialized.current) return;
+    if (!client || !slot || adMode === 'pending' || initialized.current) {
+      return;
+    }
 
     let active = true;
     loadAdSenseScript(client)
       .then(() => {
         if (!active || initialized.current) return;
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        const adQueue = (window.adsbygoogle = window.adsbygoogle || []) as AdQueue;
+        adQueue.requestNonPersonalizedAds = adMode === 'limited' ? 1 : 0;
+        adQueue.pauseAdRequests = 0;
+        adQueue.push({});
         initialized.current = true;
         setReady(true);
       })
@@ -144,8 +153,8 @@ export default function AdSlot({ slot, placement }: AdSlotProps) {
         style={{ display: 'block' }}
         data-ad-client={client}
         data-ad-slot={slot}
-        data-ad-format={placement === 'footer' ? 'auto' : undefined}
-        data-full-width-responsive={placement === 'footer' ? 'true' : undefined}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
         data-npa={adMode === 'limited' ? '1' : undefined}
       />
       {!ready && <span className="ad-slot__loading" aria-hidden="true" />}

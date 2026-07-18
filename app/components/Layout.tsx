@@ -172,7 +172,7 @@ const Layout = ({ children, feedbackSectionNeedsExtraHeight, feedbackSubmitted =
               top: 'max(140px, 18vh)',
               left: 0,
               width: sideBoxWidth,
-              zIndex: 2
+              zIndex: 5
             }}
           >
             <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_LEFT_RAIL_SLOT} placement="rail" />
@@ -196,7 +196,7 @@ const Layout = ({ children, feedbackSectionNeedsExtraHeight, feedbackSubmitted =
               top: 'max(140px, 18vh)',
               right: 0,
               width: sideBoxWidth,
-              zIndex: 2
+              zIndex: 5
             }}
           >
             <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_RIGHT_RAIL_SLOT} placement="rail" />

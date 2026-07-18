@@ -23,3 +23,13 @@
   color: #2c3e50;
   text-underline-offset: 3px;
 }
+
+.site-footer__cookie-settings {
+  padding: 0;
+  color: #2c3e50;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: 0;
+}
