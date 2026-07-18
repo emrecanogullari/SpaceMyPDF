@@ -1,0 +1,25 @@
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 24px;
+  padding: 24px 16px;
+  color: #4b5563;
+  background: #fff8ef;
+  border-top: 1px solid rgba(91, 74, 61, 0.2);
+  font-size: 14px;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer nav {
+  display: flex;
+  gap: 16px;
+}
+
+.site-footer a {
+  color: #2c3e50;
+  text-underline-offset: 3px;
+}

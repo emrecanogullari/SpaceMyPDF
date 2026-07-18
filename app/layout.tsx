@@ -17,6 +17,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Navigation from "./components/Navigation";
+import ConsentManager from "./components/ConsentManager";
+import SiteFooter from "./components/SiteFooter";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { GA_MEASUREMENT_ID } from './utils/analytics';
 
@@ -176,6 +178,8 @@ export default function RootLayout({
       <body suppressHydrationWarning style={{ WebkitOverflowScrolling: 'touch' }}>
         <Navigation />
         {children}
+        <SiteFooter />
+        <ConsentManager />
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
         <Script id="enable-ios-scroll-to-top" strategy="afterInteractive">
           {`

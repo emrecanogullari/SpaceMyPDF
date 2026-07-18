@@ -133,7 +133,8 @@
   align-items: center;
   gap: 6px;
   z-index: 1;
-  position: relative;
+  position: absolute;
+  left: 0;
   flex-shrink: 0;
   min-width: 0;
 }

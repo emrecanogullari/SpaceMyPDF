@@ -12,6 +12,7 @@ import FeedbackForm from './components/FeedbackForm';
 import WhiteBox from './components/WhiteBox';
 import DonationsBox from './components/DonationsBox';
 import MobileOrientationMessage from './components/MobileOrientationMessage';
+import AdSlot from './components/AdSlot';
 // MEMBERSHIP DISABLED: These imports commented out for future re-enablement
 // import DownloadRestriction from './components/DownloadRestriction';
 // import MembershipBanner from './components/MembershipBanner';
@@ -1284,6 +1285,9 @@ export default function Home() {
           <div className="section-gap"></div>
           <DonationsBox />
         </div>
+        <section className="mobile-ad-section" aria-label="Advertisement section">
+          <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_FOOTER_SLOT} placement="footer" />
+        </section>
       </div>
       <script 
         type="application/ld+json"

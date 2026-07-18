@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useState, useEffect, useRef, createContext, useLayoutEffect } from 'react';
 import MobileOrientationMessage from './MobileOrientationMessage';
+import AdSlot from './AdSlot';
 
 // Create a context to pass the ref to children
 export const GreenContentRefContext = createContext<React.RefObject<HTMLDivElement> | null>(null);
@@ -164,6 +165,18 @@ const Layout = ({ children, feedbackSectionNeedsExtraHeight, feedbackSubmitted =
             height: '100%',
             zIndex: 1
           }}></div>
+          <div
+            className="side-ad"
+            style={{
+              position: 'absolute',
+              top: 'max(140px, 18vh)',
+              left: 0,
+              width: sideBoxWidth,
+              zIndex: 2
+            }}
+          >
+            <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_LEFT_RAIL_SLOT} placement="rail" />
+          </div>
           
           {/* Right side box */}
           <div style={{
@@ -176,6 +189,18 @@ const Layout = ({ children, feedbackSectionNeedsExtraHeight, feedbackSubmitted =
             height: '100%',
             zIndex: 1
           }}></div>
+          <div
+            className="side-ad"
+            style={{
+              position: 'absolute',
+              top: 'max(140px, 18vh)',
+              right: 0,
+              width: sideBoxWidth,
+              zIndex: 2
+            }}
+          >
+            <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_RIGHT_RAIL_SLOT} placement="rail" />
+          </div>
           
           {/* Main content */}
           <div style={{

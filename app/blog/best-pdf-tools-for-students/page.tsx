@@ -122,7 +122,7 @@ export default function BlogPost() {
             6. Unlimited Processing
           </h4>
           <p style={{ marginBottom: '30px' }}>
-            During your 30-day free trial, process as many PDFs as you need. Perfect for students dealing with dozens of lecture slides and readings each semester.
+            Process as many PDFs as you need for free. Perfect for students dealing with dozens of lecture slides and readings each semester.
           </p>
 
           <div style={{
@@ -207,7 +207,7 @@ export default function BlogPost() {
             Conclusion
           </h2>
           <p style={{ marginBottom: '30px' }}>
-            After testing countless PDF tools, SpaceMyPDF is the clear winner for students. It solves the fundamental problem—lack of note-taking space—that holds back academic performance. With flexible positioning, pattern options, and unlimited processing during the trial, it's the perfect tool for any student serious about improving their study efficiency.
+            After testing countless PDF tools, SpaceMyPDF is the clear winner for students. It solves the fundamental problem—lack of note-taking space—that holds back academic performance. With flexible positioning, pattern options, and unlimited free processing, it's the perfect tool for any student serious about improving their study efficiency.
           </p>
 
           <div style={{
@@ -219,10 +219,10 @@ export default function BlogPost() {
             marginTop: '50px'
           }}>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '15px' }}>
-              Start Your Free 30-Day Trial
+              Start Adding Note Space for Free
             </h3>
             <p style={{ fontSize: '16px', marginBottom: '25px', opacity: 0.9 }}>
-              Transform your PDFs into perfect study materials. Unlimited processing. No credit card required.
+              Transform your PDFs into perfect study materials. No account or credit card required.
             </p>
             <Link 
               href="/"
