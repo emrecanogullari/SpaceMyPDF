@@ -29,7 +29,15 @@ export function middleware(request: NextRequest) {
   
   // Remove any other unnecessary query parameters from homepage
   if (url.pathname === '/' && url.search) {
-    const allowedParams = ['utm_source', 'utm_medium', 'utm_campaign', 'ref', 'referral'];
+    const allowedParams = [
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'ref',
+      'referral',
+      'fc',
+      'fctype',
+    ];
     const newSearchParams = new URLSearchParams();
     
     // Only keep allowed tracking parameters
