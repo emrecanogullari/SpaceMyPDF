@@ -17,6 +17,25 @@ export default function ChangelogPage() {
 
   const changelogEntries = [
     {
+      version: "1.4.0",
+      date: "July 18, 2026",
+      title: "Free Public Tool, Page Selection & Privacy Controls",
+      features: [
+        "Optional page-range selection for note space, with unselected PDF pages preserved unchanged",
+        "Completely free public workflow with no account, trial, membership, or credit card requirement",
+        "Privacy Policy, Cookie Policy, and Terms pages linked from the site footer and donation area",
+        "Consent-aware, configuration-gated ad placements reserved for the empty side rails and an isolated post-donation area",
+        "Public ads.txt publisher declaration and Google Privacy & messaging compatibility"
+      ],
+      improvements: [
+        "Page-range validation prevents invalid selections before download",
+        "Preview reflects selected pages within the first-three-page preview limit",
+        "Ads are kept away from upload, PDF settings, download, feedback, and donation controls",
+        "Footer cookie settings can reopen Google consent choices when the consent service is active",
+        "Updated public copy to accurately describe the free, browser-local PDF workflow"
+      ]
+    },
+    {
       version: "1.3.0-beta",
       date: "October 29, 2024",
       title: "Membership System & Enhanced User Experience",
